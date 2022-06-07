@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 //defining schema for mongodb database
 const userSchema = new Schema({
-    // userId:{
-    //     type:String,
-    //     required:true
-    // },
+    userId:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true

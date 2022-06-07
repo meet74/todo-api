@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../database/schema/usersSchema');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const { randomUUID } = require('crypto'); 
 
 const router = express.Router();
 
@@ -31,7 +32,10 @@ router.get('/signup',
             console.log(req.query);
             console.log(email);
             console.log(name);
+            const userId = randomUUID();
+            console.log(userId);
             user = new User({
+                userId:userId,
                 name:name,
                 email: email,
                 password: password
@@ -68,14 +72,17 @@ router.get('/login', async (req, res) => {
                 const isMatch = await bcrypt.compare(password, result.password);
                 console.log(isMatch);
                 if (!isMatch) {
-                    res.status(200).send({
+                    res.status(401).send({
                         message: "Wrong Password"
+                    })
+                }else{
+                    res.status(200).send({
+                        message: "Success",
+                        data:result
                     })
                 }
 
-                res.status(200).send({
-                    message: "Success"
-                })
+               
             }
         })
 
