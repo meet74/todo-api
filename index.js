@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const authRouter = require('./src/routers/authRouter')
+const crudeRouter = require('./src/routers/crudeRouter')
 const mongoDatabase = require('./src/database/db_url')
 const app = express();
 const server = require('http').createServer(app);
@@ -26,6 +27,7 @@ mongoDatabase();
 
 //mongoose and mongo sandbox routes
 app.use('/auth', authRouter);
+app.use('/home', crudeRouter);
 
 
 // @route GET /
