@@ -44,7 +44,8 @@ router.get('/signup',
             user.password = await bcrypt.hash(password, salt)
             await user.save();
             res.status(200).send({
-                message: "Success"
+                message: "Success",
+                data:user
             })
         } catch (error) {
             res.status(404).send({
