@@ -20,33 +20,36 @@ router.get('/signup',
         const name = req.query.name
         
         try {
-            let user = User.findOne({ email }).then(result => {
+             User.findOne({ email }).then(async (result) => {
                 if (result) {
                     res.status(400).send({
                         message: "User already exist"
+                    })
+                }else{
+                    console.log(req.query);
+                    console.log(email);
+                    console.log(name);
+                    const userId = randomUUID();
+                    console.log(userId);
+                    let user = new User({
+                        userId:userId,
+                        name:name,
+                        email: email,
+                        password: password
+                    })
+                    const salt = await bcrypt.genSalt(10);
+                    user.password = await bcrypt.hash(password, salt)
+                    await user.save();
+                    console.log('signup',user);
+                    res.status(200).send({
+                        message: "Success",
+                        data:user
                     })
                 }
             })
 
 
-            console.log(req.query);
-            console.log(email);
-            console.log(name);
-            const userId = randomUUID();
-            console.log(userId);
-            user = new User({
-                userId:userId,
-                name:name,
-                email: email,
-                password: password
-            })
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(password, salt)
-            await user.save();
-            res.status(200).send({
-                message: "Success",
-                data:user
-            })
+           
         } catch (error) {
             res.status(404).send({
                 message: "Something went wrong!!"
@@ -69,7 +72,7 @@ router.get('/login', async (req, res) => {
                     message: "User not Exist"
                 })
             } else {
-                console.log(result);
+                console.log('login',result);
                 const isMatch = await bcrypt.compare(password, result.password);
                 console.log(isMatch);
                 if (!isMatch) {

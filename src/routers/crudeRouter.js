@@ -7,7 +7,8 @@ router.get('/gettodos',(req,res) => {
   console.log(req.query.userid);
   const userId = req.query.userid;
   Todos.find({ userId: userId }).then(async doc => {
-    if (doc) {
+    console.log(doc);
+    if (doc.length>0) {
       res.status(200).json({
         message: "Success",
         todo: doc
@@ -118,5 +119,30 @@ router.post("/addTodo", async (req, res) => {
    }
   })
  });
+
+ router.patch('/updatecheckbox',(req,res) => {
+  const userID = req.query.userid;
+  const todoId = req.query.todoId;
+  const checked = req.query.checked;
+   console.log(userID);
+  Todos.findOne({userId: userID}).then((doc) => {
+   console.log(doc);
+   if (doc) {
+     const todos = doc.todos;
+     const index = doc.todos.findIndex((todo)=>todo.todoId === todoId)
+     console.log('t',doc.todos+todoId);
+     doc.todos[index].checked = checked;
+      doc.save();
+     res.status(200).json({
+       message: "Success",
+       todo: todos[index]
+     });  
+   }else{
+     res.status(404).json({
+       message: "Not found",
+     });
+   }
+  })
+ })
 
 module.exports = router;
