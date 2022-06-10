@@ -73,14 +73,15 @@ router.post("/addTodo", async (req, res) => {
 
  router.put("/updatetodo", (req, res) => {
    const todoData = req.body;
+   console.log('todos1',todoData);
    const userID = todoData.userId;
     console.log(userID);
    Todos.findOne({userId: userID}).then((doc) => {
     console.log(doc);
     if (doc) {
       const todos = doc.todos;
-      const index = todos.findIndex((todo)=>todo.todoId === todoData.todo.todoId)
-      todos[index] = todoData.todo;
+      const index = todos.findIndex((todo)=>todo.todoId === todoData.todoId)
+      todos[index] = todoData;
       doc.save();
       res.status(200).json({
         message: "Success",
@@ -95,15 +96,16 @@ router.post("/addTodo", async (req, res) => {
  });
 
  router.delete("/deletetodo", (req, res) => {
-  const todoData = req.body;
-  const userID = todoData.userId;
+  const userID = req.query.userid;
+  const todoId = req.query.todoId;
    console.log(userID);
   Todos.findOne({userId: userID}).then((doc) => {
-   console.log(doc);
+   console.log('delet',doc);
    if (doc) {
      const todos = doc.todos;
-     const updatedTodos = todos.filter((todo)=>todo.todoId !== todoData.todo.todoId)
+     const updatedTodos = todos.filter((todo)=>todo.todoId !== todoId)
      doc.todos=updatedTodos;
+     console.log(updatedTodos);
      doc.save();
      res.status(200).json({
        message: "Successfully deleted",
