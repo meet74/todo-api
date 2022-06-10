@@ -35,4 +35,4 @@ app.get('/',(req,res) => {
     res.send('Todo app')
 })
 
-server.listen(port,()=>console.log(`Server started on ${port}`));
+server.listen(process.env.PORT || 5000,()=>console.log(`Server started on ${port}`));
