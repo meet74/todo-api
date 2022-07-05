@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const authRouter = require('./src/routers/authRouter')
+
 const crudeRouter = require('./src/routers/crudeRouter')
 const mongoDatabase = require('./src/database/db_url')
 const app = express();
@@ -26,13 +26,13 @@ mongoDatabase();
 
 
 //mongoose and mongo sandbox routes
-app.use('/auth', authRouter);
+
 app.use('/home', crudeRouter);
 
 
 // @route GET /
 app.get('/',(req,res) => {
-    res.send('Todo app')
+    res.send('Node app')
 })
 
 server.listen(process.env.PORT || 5000,()=>console.log(`Server started on ${port}`));
