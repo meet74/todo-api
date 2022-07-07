@@ -29,9 +29,13 @@ router.post("/addracquet", async (req, res) => {
       racquetBrand: racquetData.racquetBrand,
       dateOfLastRestring: racquetData.dateOfLastRestring,
       gamesPerWeek: racquetData.gamesPerWeek,
+      stringType: racquetData.stringType,
+      stringBrand: racquetData.stringBrand,
+      gauge: racquetData.gauge,
+      tension: racquetData.tension,
       racquetId: racquetId,
     });
-    console.log(racquet);
+    console.log('final',racquet);
     await racquet.save();
 
     res.status(200).json({
